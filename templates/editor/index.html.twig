@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="text-5xl text-center font-bold"> {{task.title}}
+</div><br/>
+<div>
+    <ul class="ml-[10px]">
+        <li>
+            <label class="flex items-start gap-2"> Aufgabenname </label>
+            <input
+            class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]" 
+            value="{{task.title}}"
+            name="editTaskName"
+            id="editTaskName">
+            </input>
+        </li><br/>
+        <li>
+            <label class="flex items-start gap-2"> Zeitraum </label>
+            <input class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]"
+            value="{{task.timesheet}}"
+            name="editTaskTimesheet"
+            id="editTaskTimesheet">
+            </input>
+        </li><br/>
+        <li>
+            <label class="flex items-start gap-2"> Aufgabeninformationen </label>
+            <textarea class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[850px] h-[400px] resize-none inline-block"
+            name="editTaskInfo"
+            id="editTaskInfo">{{task.Info}}</textarea>
+        </li>
+    </ul>
+</div><br/>
+{% endblock %}
+{% block footer %}
+    <div class="ml-[10px]">
+        <a href="{{ path('task_list') }}">
+            <button class="bg-blue-500 text-white rounded-full py-1 px-4" 
+            hx-include="#editTaskName, #editTaskTimesheet, #editTaskInfo"
+            hx-post="{{ path('submite', {id: task.id}) }}">
+                Übernehmen!
+            </button>
+        </a>
+        <a href="{{ path('task_list') }}">
+            <button class="bg-blue-500 text-white rounded-full py-1 px-4">
+                Abbruch!
+            </button>
+        </a>
+    </div>
+{% endblock %}

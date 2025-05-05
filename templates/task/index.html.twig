@@ -1,0 +1,23 @@
+{% extends 'base.html.twig'%}
+{%block body%}
+    <div class="text-5xl text-center font-bold">Aufgabenliste</div>
+
+    {#<button hx-post="{{ path('task_add') }}"
+         hx-target="#task-list"
+         hx-swap="beforeend"
+         class="bg-blue-500 text-white px-4 py-1 rounded-full">
+        Neue Aufgabe!
+    </button>#}
+
+    <a href="{{ path('page_show') }}">
+        <button class="bg-blue-500 text-white px-4 py-1 rounded-full">
+        Aufgabe hinzufügen
+        </button>
+    </a>
+
+    <div id="task-list">
+        {% for task in tasks %}
+            {% include 'task/task.html.twig' with {'task': task} %}
+        {% endfor %}
+    </div>
+{%endblock%}

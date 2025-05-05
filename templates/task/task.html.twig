@@ -1,0 +1,28 @@
+<!-- templates/task/_task.html.twig -->
+<div class="flex" id="task-{{ task.id }}">
+    <div class="flex justify-between p-2 border-b">
+        <span class="w-[150px]">{{ task.title }}</span>
+        <span class="w-[100px]">{{task.timesheet|date('d/m/Y')}}</span>
+        <span class="w-[1100px]">{{task.Info | nl2br}}</span>
+    </div>
+    <div class="p-2 border-b">
+        <button 
+            hx-post="{{ path('task_toggle', {id: task.id}) }}" 
+            hx-target="closest div">✓
+        </button><br/>
+
+        <a href="{{ path('task_edit', {id: task.id}) }}">
+            <button>
+                Bearbeiten
+            </button><br/>
+        </a>
+
+        <button 
+            hx-delete="{{ path('task_delete', {id: task.id}) }}" 
+            hx-target="#task-{{ task.id }}" 
+            hx-swap="outerHTML"
+            hx-confirm="Willst du das wirklich löschen?">
+            Löschen
+        </button><br/>
+    </div>
+</div>
