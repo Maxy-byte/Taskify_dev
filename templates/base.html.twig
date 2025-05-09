@@ -1,15 +1,133 @@
 <!doctype html>
-<html>
+<html lang="de">
 <head>
-  <title>{%block title%} {%endblock%}</title>
   <meta charset="UTF-8">
-  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <title>{% block title %}{% endblock %}</title>
+
+  <!-- Tailwind + Material Tailwind HTML -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@material-tailwind/html@2.3.2/scripts/dialog.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+  <!-- Optional: htmx, wenn du es nutzt -->
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+
+  {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+  {% endblock %}
 </head>
-<body>
-  {%block body%} {%endblock%}
+
+<body class="flex flex-col items-center justify-center">
+
+<div class="w-full max-w-screen-2xl p-6">
+  {% block body %}{% endblock %}
+</div>
+
+<div  data-dialog-backdrop="add-modal"
+      data-dialog-backdrop-close="true"
+      class="pointer-event-none opacity-0 transition-opacity duration-300 fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-60">
+  <div data-dialog="add-modal"
+       class="bg-white p-6 rounded-lg w-full max-w-5xl">
+    <h2 id="add-modal"
+        class="text-xl font-bold mb-4">Neue Aufgabe hinzufügen</h2>
+    <p id="add-modal-content"
+       class="mb-4">
+    <ul class="ml-[10px] mr-[10px]">
+      <li class="list-none p-2">
+        <label class="flex items-start gap-2"> Aufgabenname </label>
+        <input name="taskName"
+               id="taskName"
+               placeholder="Name der Aufgabe"
+               class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%]"/>
+      </li>
+      <li class="list-none p-2">
+        <label class="flex items-start gap-2"> Zeitraum </label>
+        <input type="date" id="taskTimesheet"
+               name="taskTimesheet"
+               min="2025-01-01"
+               max="2030-12-31"
+               class="border px-3 py-2 rounded w-[100%]"
+               value="timesheet"/>
+      </li>
+      <li class="list-none p-2">
+        <label class="flex items-start gap-2"> Priorität </label>
+        <input type="number"
+               min="0"
+               max="4"
+               id="taskPriority"
+               name="taskPriority"
+               class="border px-3 py-2 rounded w-[100%]"
+               placeholder="Priorität der Aufgabe"/>
+      </li>
+      <li class="list-none p-2">
+        <label class="flex items-start gap-2"> Aufgabeninformationen </label>
+        <textarea type="text"
+                  placeholder="Hier werden alle Informationen von der Aufgabe hinzugefügt"
+                  class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%] h-[550px] resize-none inline-block"
+                  id="taskInfo"
+                  name="taskInfo"></textarea>
+      </li>
+    </ul>
+    </p>
+    <button class="bg-green-500 text-white px-4 py-2 rounded-full"
+            hx-post="{{ path('task_add') }}"
+            {% block add_modal_action %}{% endblock %}>Speichern</button>
+    <button data-dialog-close="true"
+            class="bg-red-500 text-white px-4 py-2 rounded-full">Schließen</button>
+  </div>
+</div>
+
+<div  data-dialog-backdrop="edit-modal"
+      data-dialog-backdrop-close="true"
+      class="pointer-event-none opacity-0 transition-opacity duration-300 fixed inset-0 z-50 grid place-items-center bg-black bg-opacity-60">
+  <div data-dialog="edit-modal"
+       class="bg-white p-6 rounded-lg w-full max-w-5xl">
+    <h2 id="edit-modal"
+        class="text-xl font-bold mb-4"></h2>
+    <p id="edit-modal-content"
+       class="mb-4">
+      <ul class="ml-[10px] mr-[10px] " >
+        <li class="list-none p-2">
+          <label class="flex items-start gap-2"> Aufgabenname </label>
+          <input name="editTaskName"
+                  id="editTaskName"
+                  class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%]"/>
+        </li>
+        <li class="list-none p-2">
+          <label class="flex items-start gap-2"> Zeitraum </label>
+          <input type="date" id="editTaskTimesheet"
+                 name="editTaskTimesheet"
+                 min="2025-01-01"
+                 max="2030-12-31"
+                 class="border px-3 py-2 rounded w-[100%]"/>
+        </li>
+        <li class="list-none p-2">
+          <label class="flex items-start gap-2"> Priorität </label>
+          <input type="number"
+                 min="0"
+                 max="4"
+                 id="editTaskPriority"
+                 name="editTaskPriority"
+                 class="border px-3 py-2 rounded w-[100%]"/>
+        </li>
+        <li class="list-none p-2">
+          <label class="flex items-start gap-2"> Aufgabeninformationen </label>
+          <textarea type="text"
+                    class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%] h-[550px] resize-none inline-block"
+                    id="editTaskInfo"
+                    name="editTaskInfo"></textarea>
+        </li>
+      </ul>
+    </p>
+    <button class="bg-green-500 text-white px-4 py-2 rounded-full"
+            {% block edit_modal_action %}{% endblock %}>Speichern</button>
+    <button data-dialog-close="true"
+            class="bg-red-500 text-white px-4 py-2 rounded-full">Schließen</button>
+  </div>
+</div>
 </body>
+
 <footer>
-  {%block footer%}{%endblock%}
+  {% block footer %}{% endblock %}
 </footer>
 </html>

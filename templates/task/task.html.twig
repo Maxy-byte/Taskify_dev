@@ -1,28 +1,39 @@
 <!-- templates/task/_task.html.twig -->
-<div class="flex" id="task-{{ task.id }}">
-    <div class="flex justify-between p-2 border-b">
+<div class="task-item bg-white p-4 rounded shadow" id="task-{{ task.id }}">
+    <div class="flex justify-between p-2">
         <span class="w-[150px]">{{ task.title }}</span>
-        <span class="w-[100px]">{{task.timesheet|date('d/m/Y')}}</span>
+        <span class="w-[100px]">{{task.timesheet|date('d.m.Y')}}</span>
         <span class="w-[1100px]">{{task.Info | nl2br}}</span>
-    </div>
-    <div class="p-2 border-b">
-        <button 
-            hx-post="{{ path('task_toggle', {id: task.id}) }}" 
-            hx-target="closest div">✓
-        </button><br/>
-
-        <a href="{{ path('task_edit', {id: task.id}) }}">
-            <button>
-                Bearbeiten
-            </button><br/>
-        </a>
-
-        <button 
-            hx-delete="{{ path('task_delete', {id: task.id}) }}" 
-            hx-target="#task-{{ task.id }}" 
-            hx-swap="outerHTML"
-            hx-confirm="Willst du das wirklich löschen?">
-            Löschen
-        </button><br/>
+        <span class="w-[100px]">{{ task.priority }}</span>
+        <ul>
+            <li>
+                <button
+                        class="bg-green-500 text-white px-4 py-1 rounded-full"
+                    hx-delete="{{ path('task_delete', {id: task.id}) }}"
+                    hx-target="#task-{{ task.id }}">✓
+                </button><br/>
+            </li>
+            <li>
+                <button data-dialog-target="edit-modal"
+                        onclick="fillEditModal(this)"
+                        data-title="{{ task.title }}"
+                        data-timesheet="{{ task.timesheet|date('Y-m-d') }}"
+                        data-priority="{{ task.priority }}"
+                        data-info="{{ task.info|e('html_attr') }}"
+                        data-id="{{ task.id }}"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-full">
+                    Bearbeiten!
+                </button><br/>
+            </li>
+            <li>
+                <button
+                    hx-delete="{{ path('task_delete', {id: task.id}) }}"
+                    hx-target="#task-{{ task.id }}"
+                    hx-swap="outerHTML"
+                    class="bg-red-500 text-white px-4 py-1 rounded-full">
+                        Löschen
+                </button><br/>
+            </li>
+        </ul>
     </div>
 </div>

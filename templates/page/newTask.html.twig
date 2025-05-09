@@ -1,33 +1,38 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block body %}
 <div class="text-5xl font-bold text-center">Neue Aufgabe hinzufügen
 </div><br/>
 <div>
-    <ul class="ml-[10px]">
+    <ul class="ml-[10px] mr-[10px]" >
         <li class="list-none">
             <label class="flex items-start gap-2"> Aufgabenname </label>
             <input
             name="taskName"
             id="taskName"
             placeholder="Name der Aufgabe"
-            class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[250px]">
-            </input>
+            class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%]"/>
         </li><br/>
         <li>
-            <label class="flex itmes-start gap-2"> Zeitraum </label>
-            <input type="date" id="taskTimesheet" name="taskTimesheet" min="2025-01-01" max="2030-12-31" class="border px-3 py-2 rounded w-64">
+            <label class="flex items-start gap-2"> Zeitraum </label>
+            <input type="date" id="taskTimesheet" name="taskTimesheet" min="2025-01-01" max="2030-12-31" class="border px-3 py-2 rounded w-[100%]" value="timesheet"/>
+        </li><br/>
+        <li>
+            <label class="flex items-start gap-2"> Priorität </label>
+            <input type="number" min="0" max="4" id="taskPriority" name="taskPriority" class="border px-3 py-2 rounded w-[100%]" placeholder="Priorität der Aufgabe"/>
         </li><br/>
         <li class="list-none">
             <label class="flex items-start gap-2"> Aufgabeninformationen </label>
             <textarea type="text"
             placeholder="Hier werden alle Informationen von der Aufgabe hinzugefügt"
-            class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[850px] h-[400px] resize-none inline-block"
+            class="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100%] h-[550px] resize-none inline-block"
             id="taskInfo"
             name="taskInfo"></textarea>
         </li><br/>
     </ul>
 </div>
+
 
 <script>
     const today = new Date();
@@ -35,23 +40,22 @@
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
 
-    const dateString =  `${yyyy}-${mm}-${dd}`;
-    document.getElementById('timesheet').value = dateString;
+    const dateString = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('taskTimesheet').value = dateString;
 </script>
 {% endblock %}
 {% block footer%}
 <div class="ml-[10px]">
-    {#<a href="{{ path('task_list') }}">#}
-        <button class="bg-blue-500 text-white rounded-full py-1 px-4"
-        hx-include="#taskName, #taskTimesheet, #taskInfo"
-        hx-post="{{ path('task_add') }}">
-            Speichern!
-        </button>
-    {#</a>#}
+    <button class="bg-blue-500 text-white rounded-full py-1 px-4"
+    hx-include="#taskName, #taskTimesheet, #taskInfo, #taskPriority"
+    hx-post="{{ path('task_add') }}"
+    hx-on="htmx:afterRequest: window.location.href = '{{ path('task_list') }}'">
+        Speichern!
+    </button>
     <a href="{{ path('task_list') }}">
         <button class="bg-blue-500 text-white rounded-full py-1 px-4">
             Abbruch!
         </button>
     </a>
 </div>
-{%endblock%}
+{%endblock%}#}

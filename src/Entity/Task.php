@@ -28,6 +28,8 @@ class Task
     private ?string $info = null;
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $timesheet = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $priority = null;
     
     public function __construct(){
         $this->createdAt = new DateTimeImmutable();
@@ -51,7 +53,7 @@ class Task
         $this->completed = $completed;
         return $this;
     }
-    public function getCreatedAt(): DateTimeImmutable{
+    public function getCreatedAt(): ?DateTimeImmutable{
         return $this->createdAt;
     }
     public function setCreatedAt(DateTimeImmutable $createdAt): self{
@@ -71,5 +73,12 @@ class Task
     }
     public function getTimesheet(): DateTimeInterface{
         return $this->timesheet;
+    }
+    public function setPriority(int $priority): self{
+        $this->priority = $priority;
+        return $this;
+    }
+    public function getPriority(): int{
+        return $this->priority;
     }
 }

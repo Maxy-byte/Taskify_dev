@@ -58,6 +58,7 @@ final class TaskController extends AbstractController
       $title = $request->request->get('taskName');
       $info = $request->request->get('taskInfo');
       $timesheet = $request->request->get('taskTimesheet');
+      $priority = $request->request->get('taskPriority');
 
         if ($timesheet){
         $newTimesheet = \DateTime::createFromFormat('Y-m-d', $timesheet);
@@ -67,13 +68,11 @@ final class TaskController extends AbstractController
       $task->setCreatedAt(new DateTimeImmutable());
       $task->setTitle($title);
       $task->setInfo($info);
+      $task->setPriority($priority);
           
       $em->persist($task);
       $em->flush();
 
-        return $this->render('task/task.html.twig', [
-            'task' => $task,
-        ]);
+        return new Response('', 200, ['HX-Redirect' => $this->generateUrl('task_list')]);
    }
-
 }

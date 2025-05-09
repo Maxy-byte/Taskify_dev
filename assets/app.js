@@ -1,4 +1,6 @@
 import './bootstrap.js';
+import './scripts/dragAndDrop.js';
+import './scripts/edit-modal.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -8,3 +10,17 @@ import './bootstrap.js';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+// import Sortable from 'sortablejs';
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     const taskList = document.getElementById('task-list');
+//     if (taskList) {
+//         new Sortable(taskList, {
+//             animation: 150,
+//             ghostClass: 'bg-gray-50',
+//             onEnd: function (ev) {
+//                 console.log('Neu sortiert von'. ev.oldIndex, 'nach', ev.newIndex);
+//             }
+//         })        ;
+//     }
+// });
